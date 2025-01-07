@@ -87,3 +87,28 @@ def login(email, password):
     except Exception as e:
         print(f"Error during login query execution: {e}")
         return False
+
+def get_jumlah_pasien():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            SELECT 
+                jenis_kelamin, 
+                COUNT(*) AS total 
+            FROM user 
+            GROUP BY jenis_kelamin;
+        """)
+        result = cur.fetchall()
+        cur.close()
+        
+        jumlah_pasien = {"Laki-laki": 0, "Perempuan": 0}
+        for row in result:
+            if row[0] == 'L':  # Laki-laki
+                jumlah_pasien["Laki-laki"] = row[1]
+            elif row[0] == 'P':  # Perempuan
+                jumlah_pasien["Perempuan"] = row[1]
+
+        return jumlah_pasien
+    except Exception as e:
+        print(f"Error fetching jumlah pasien: {e}")
+        return None

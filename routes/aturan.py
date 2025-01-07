@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.aturan import get_all_aturan, get_aturan_by_id
+from models.aturan import (get_all_aturan, get_aturan_by_id, create_aturan, update_aturan,delete_aturan)
 
 aturan_bp = Blueprint('aturan', __name__)
 

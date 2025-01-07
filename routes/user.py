@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.user import get_all_user, get_user_by_id, create_user, update_user, delete_user,login
+from models.user import get_all_user, get_user_by_id, create_user, update_user, delete_user, login, get_jumlah_pasien
 
 user_bp = Blueprint('user', __name__)
 
@@ -67,3 +67,14 @@ def login_user():
         
     else:
         return jsonify({'message': 'login error'}), 400
+
+@user_bp.route('/dashboard/jumlah-pasien', methods=['GET'])
+def jumlah_pasien():
+    data = get_jumlah_pasien()
+    if data:
+        return jsonify({
+            'message': 'Jumlah pasien berhasil diambil',
+            'data': data
+        }), 200
+    else:
+        return jsonify({'message': 'Gagal mengambil jumlah pasien'}), 500
