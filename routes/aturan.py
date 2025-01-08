@@ -38,7 +38,6 @@ def edit_aturan(id_aturan):
     result = update_aturan(id_aturan, id_gejala, id_penyakit)
     return jsonify(result)
 
-# DELETE Aturan
 @aturan_bp.route('/aturan/<int:id_aturan>', methods=['DELETE'])
 def remove_aturan(id_aturan):
     result = delete_aturan(id_aturan)

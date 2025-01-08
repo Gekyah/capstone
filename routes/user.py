@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.user import get_all_user, get_user_by_id, create_user, update_user, delete_user, login, get_jumlah_pasien
+from models.user import get_all_user, get_user_by_id, create_user, update_user, delete_user, login_user, get_jumlah_pasien
 
 user_bp = Blueprint('user', __name__)
 
@@ -57,12 +57,11 @@ def delete_user_route(id):
         return jsonify({'message': 'Error while deleting user'}), 400
 
 @user_bp.route('/login', methods=['POST'])
-def login_user():
+def user_login():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-
-    if login(email,password):
+    if login_user(email,password):
         return jsonify({'message': 'login success'}), 200
         
     else:

@@ -24,6 +24,35 @@ def get_aturan_by_id(id):
         print(f"Error fetching aturan by ID {id}: {e}")
         return None
 
+def get_penyakit_by_gejala(gejala):
+    print(f"Gejala yang diterima: {gejala}")
+    """Cari penyakit berdasarkan gejala yang dipilih"""
+    try:
+        cur = mysql.connection.cursor()
+        query = """
+            SELECT p.id_penyakit, p.nama_penyakit, COUNT(a.id_gejala) AS jumlah_gejala_cocok
+            FROM aturan a
+            JOIN penyakit p ON a.id_penyakit = p.id_penyakit
+            WHERE a.id_gejala IN %s
+            GROUP BY p.id_penyakit
+            ORDER BY jumlah_gejala_cocok DESC
+            LIMIT 1
+        """
+        cur.execute(query, (tuple(gejala),))
+        hasil = cur.fetchone()
+        cur.close()
+        if hasil:
+            return {
+                'id_penyakit': hasil[0],
+                'nama_penyakit': hasil[1],
+                'jumlah_gejala_cocok': hasil[2]
+            }
+        return None
+    except Exception as e:
+        print(f"Error get_penyakit_by_gejala: {e}")
+        return None
+
+
 def create_aturan(id_gejala, id_penyakit):
     try:
         cur = mysql.connection.cursor()

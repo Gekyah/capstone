@@ -71,21 +71,18 @@ def delete_user(id_user):
         print(f"Error deleting user ID {id_user}: {e}")
         return False
 
-def login(email, password):
+def login_user(email, password):
     try:
-        query = "SELECT * FROM user WHERE email = %s AND password = %s"
-        print(f"Executing query: {query} with email={email}, password={password}")
-        
         cur = mysql.connection.cursor()
+        query = "SELECT id_user FROM user WHERE email = %s AND password = %s"
         cur.execute(query, (email, password))
-        user = cur.fetchone()
+        result = cur.fetchone()
         cur.close()
-        if user:
-            return True
-        else:
-            return False
+        if result:
+            return True  
+        return False  
     except Exception as e:
-        print(f"Error during login query execution: {e}")
+        print(f"Error during login: {e}")
         return False
 
 def get_jumlah_pasien():
