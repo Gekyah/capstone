@@ -9,7 +9,7 @@ hasil_diagnosa_bp = Blueprint('hasil_diagnosa', __name__)
 def add_hasil_diagnosa():
     data = request.get_json()
     id_user = data.get('id_user')
-    gejala_terpilih = data.get('gejala')  # List ID gejala
+    gejala_terpilih = data.get('gejala')  
 
     if not id_user or not gejala_terpilih:
         return jsonify({'message': 'Data tidak lengkap'}), 400
@@ -19,7 +19,6 @@ def add_hasil_diagnosa():
     if not penyakit:
         return jsonify({'message': 'Tidak ditemukan penyakit yang cocok'}), 404
 
-    # Simpan hasil diagnosis ke database
     if create_hasil_diagnosa(id_user, penyakit['id_penyakit']):
         return jsonify({
             'message': 'Hasil diagnosis berhasil disimpan',
@@ -31,8 +30,6 @@ def add_hasil_diagnosa():
     else:
         return jsonify({'message': 'Gagal menyimpan hasil diagnosis'}), 500
 
-
-# Ambil semua hasil diagnosa
 @hasil_diagnosa_bp.route('/hasil-diagnosa', methods=['GET'])
 def get_hasil():
     hasil = get_all_hasil_diagnosa()
@@ -41,7 +38,6 @@ def get_hasil():
     else:
         return jsonify({'message': 'Tidak ada hasil diagnosa ditemukan'}), 404
 
-# Ambil hasil diagnosa berdasarkan ID User
 @hasil_diagnosa_bp.route('/hasil-diagnosa/<int:id_user>', methods=['GET'])
 def hasil_by_user(id_user):
     hasil = get_hasil_diagnosa_by_user(id_user)
